@@ -1,5 +1,5 @@
 // @ts-nocheck
-'use client'
+"use client";
 import { AlertCircle, PackageCheck, ShieldCheck } from "lucide-react";
 
 const PUNTOS = [
@@ -27,15 +27,19 @@ export default function ProblemSolution() {
   return (
     <section
       className="px-4 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "var(--color-surface)", paddingTop: "6rem", paddingBottom: "6rem" }}
+      style={{
+        backgroundColor: "var(--color-surface)",
+        paddingTop: "6rem",
+        paddingBottom: "6rem",
+      }}
     >
       <div className="max-w-6xl mx-auto">
-        <div className="mb-14 max-w-2xl">
+        <div className="mb-14 max-w-2xl mx-auto text-center">
           <span
             className="text-xs font-medium tracking-[0.2em] uppercase block mb-3"
             style={{ color: "var(--color-primary)" }}
           >
-            Para comercios y talleres
+            Para comercios, talleres y particulares
           </span>
           <h2
             style={{
@@ -56,7 +60,9 @@ export default function ProblemSolution() {
               key={title}
               className="rounded-2xl p-6"
               style={{
-                backgroundColor: accent ? "var(--color-primary-light)" : "var(--color-bg)",
+                backgroundColor: accent
+                  ? "var(--color-primary-light)"
+                  : "var(--color-bg)",
                 border: accent
                   ? "1px solid var(--color-primary)"
                   : "1px solid var(--color-border)",
@@ -64,7 +70,11 @@ export default function ProblemSolution() {
             >
               <Icon
                 className="w-6 h-6 mb-4"
-                style={{ color: accent ? "var(--color-primary)" : "var(--color-text-secondary)" }}
+                style={{
+                  color: accent
+                    ? "var(--color-primary)"
+                    : "var(--color-text-secondary)",
+                }}
               />
               <h3
                 style={{
