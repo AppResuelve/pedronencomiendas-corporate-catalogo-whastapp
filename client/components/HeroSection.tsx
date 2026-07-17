@@ -1,5 +1,5 @@
 // @ts-nocheck
-'use client'
+"use client";
 import { ArrowRight, Clock } from "lucide-react";
 
 export default function HeroSection({ onOpenModal }) {
@@ -29,7 +29,10 @@ export default function HeroSection({ onOpenModal }) {
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-24">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
-            <Clock className="w-4 h-4" style={{ color: "var(--color-primary)" }} />
+            <Clock
+              className="w-4 h-4"
+              style={{ color: "var(--color-primary)" }}
+            />
             <span
               className="text-xs font-medium tracking-[0.25em] uppercase"
               style={{ color: "var(--color-text-secondary)" }}
@@ -50,7 +53,7 @@ export default function HeroSection({ onOpenModal }) {
             }}
           >
             Lo que te falta hoy,{" "}
-            <span style={{ color: "var(--color-primary)" }}>hoy llega.</span>
+            <span style={{ color: "var(--color-primary)" }}>llega hoy.</span>
           </h1>
 
           <p
