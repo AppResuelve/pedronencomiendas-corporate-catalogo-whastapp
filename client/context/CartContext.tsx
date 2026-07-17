@@ -6,7 +6,8 @@ import { useStore } from '@/context/StoreContext'
 
 const CartContext = createContext<any>(null)
 
-const STORAGE_KEY = siteData.cart.persistenceKey || 'appresuelve-cart'
+// const STORAGE_KEY = siteData.cart.persistenceKey || 'appresuelve-cart'
+const STORAGE_KEY = 'appresuelve-cart'
 
 function itemKey(productId, skuId) {
   return `${productId}-${skuId || 0}`

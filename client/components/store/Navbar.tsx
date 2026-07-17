@@ -1,49 +1,29 @@
 // @ts-nocheck
-'use client'
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Menu, X, ShoppingCart, ChevronDown } from "lucide-react";
-import { siteData } from "@/data/siteData";
-import { useCart } from "@/context/CartContext";
-import { useStore } from "@/context/StoreContext";
+import { usePathname } from "next/navigation";
+import { Menu, X, MessageCircle } from "lucide-react";
 
-/*
-  Navbar con dos estados:
-  - transparente (solo en Home, cuando scrollY === 0): texto blanco sobre hero
-  - sólido (siempre en otras páginas + al hacer scroll en Home): bg blanco, texto oscuro
+const NAV_LINKS = [
+  { href: "/", label: "Inicio" },
+  { href: "/#ruta", label: "Rutas y horarios" },
+  { href: "/#precios", label: "Precios" },
+];
 
-  Prop `heroMode`: el Home lo pone en true, las demás páginas en false.
-  Se controla desde cada page o desde el layout pasando la prop.
-*/
+const WHATSAPP_FALLBACK_LINK =
+  "https://wa.me/5493436611247?text=" +
+  encodeURIComponent("Hola! Quiero consultar por un envío Victoria - Rosario.");
 
-export function Navbar({ heroMode = false }) {
+export function Navbar({ heroMode = false, onOpenModal }) {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = usePathname();
-  const { totalItems } = useCart();
-  const { categories } = useStore();
-  const searchParams = useSearchParams();
-  const currentCat = searchParams?.get("cat") || null;
-  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
-  const [desktopProductsOpen, setDesktopProductsOpen] = useState(false);
   const closeTimer = useRef(null);
 
-  const handleProductsEnter = () => {
-    clearTimeout(closeTimer.current);
-    setDesktopProductsOpen(true);
-  };
-  const handleProductsLeave = () => {
-    closeTimer.current = setTimeout(() => setDesktopProductsOpen(false), 200);
-  };
-
-  useEffect(() => {
-    return () => clearTimeout(closeTimer.current);
-  }, []);
-
-  const isActive = (path: string) => location === path;
   const isTransparent = heroMode && !scrolled;
+  const isActive = (path) => location === path;
 
   useEffect(() => {
     if (!heroMode) return;
@@ -64,19 +44,21 @@ export function Navbar({ heroMode = false }) {
     };
   }, [isOpen]);
 
-  const navLinks = siteData.navbar.items.filter((i) => i.href !== "/carrito");
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
 
-  /* Colores según estado */
-  const textColor = isTransparent
-    ? "rgba(255,255,255,0.92)"
-    : "var(--color-text-secondary)";
-  const textColorActive = isTransparent ? "#ffffff" : "var(--color-primary)";
+  const handleCtaClick = () => {
+    if (onOpenModal) {
+      onOpenModal();
+    } else {
+      window.open(WHATSAPP_FALLBACK_LINK, "_blank", "noopener,noreferrer");
+    }
+  };
+
   const bgStyle = isTransparent
     ? { backgroundColor: "transparent" }
     : {
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--color-surface)",
         borderBottom: "1px solid var(--color-border)",
-        boxShadow: "0 1px 12px rgba(0,0,0,0.05)",
       };
 
   return (
@@ -87,170 +69,104 @@ export function Navbar({ heroMode = false }) {
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 shrink-0">
-              {siteData.company?.logo ? (
-                <img
-                  src={siteData.company.logo}
-                  alt={siteData.business?.name || ""}
-                  className="h-12 w-auto object-contain"
-                />
-              ) : (
-                <img
-                  src="/logotipo.png"
-                  alt={siteData.business?.name || "Pétalos Serena"}
-                  className="h-12 w-auto object-contain"
-                />
-              )}
+            {/* Logo + marca */}
+            <Link href="/" className="flex items-center gap-2.5 shrink-0">
+              <img
+                src="/logotipo.png"
+                alt="Pedrón Encomiendas"
+                className="h-14 w-auto object-contain"
+              />
+              <span className="hidden sm:flex flex-col leading-tight">
+                {/* lg+: una sola línea */}
+                <div className="hidden lg:flex items-end gap-2">
+                  <span
+                    className="hidden lg:inline"
+                    style={{
+                      fontFamily: "var(--font-heading)",
+                      fontWeight: 700,
+                      fontSize: "1.15rem",
+                      color: "var(--color-text-primary)",
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    Pedrón
+                  </span>
+                  <span
+                    className="block text-sm uppercase tracking-[0.15em]"
+                    style={{
+                      color: "var(--color-text-secondary)",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    Encomiendas
+                  </span>
+                </div>
+                {/* md: dos líneas */}
+                <span className="hidden md:inline lg:hidden">
+                  <span
+                    style={{
+                      fontFamily: "var(--font-heading)",
+                      fontWeight: 700,
+                      fontSize: "1.1rem",
+                      color: "var(--color-text-primary)",
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    Pedrón
+                  </span>
+                  <span
+                    className="block text-xs uppercase tracking-[0.15em]"
+                    style={{
+                      color: "var(--color-text-secondary)",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    Encomiendas
+                  </span>
+                </span>
+              </span>
             </Link>
 
             {/* Links desktop */}
             <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((item) => {
-                const isProducts = item.href === "/productos";
-                const hasCategories = isProducts && categories.length > 0;
-
-                return (
-                  <div
-                    key={item.href}
-                    className="relative"
-                    onMouseEnter={
-                      hasCategories ? handleProductsEnter : undefined
-                    }
-                    onMouseLeave={
-                      hasCategories ? handleProductsLeave : undefined
-                    }
-                  >
-                    <Link
-                      href={item.href}
-                      className="relative inline-flex items-center gap-1 px-4 py-2 text-sm font-medium transition-all duration-300 group"
-                      style={{
-                        color: isActive(item.href)
-                          ? textColorActive
-                          : textColor,
-                      }}
-                    >
-                      {item.label}
-                      {hasCategories && (
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform ${desktopProductsOpen ? "rotate-180" : ""}`}
-                        />
-                      )}
-                      <span
-                        className="absolute bottom-1 left-1/2 -translate-x-1/2 h-px transition-all duration-300"
-                        style={{
-                          backgroundColor: isTransparent
-                            ? "rgba(255,255,255,0.7)"
-                            : "var(--color-lila)",
-                          width: isActive(item.href) ? "1.5rem" : "0",
-                        }}
-                      />
-                    </Link>
-                    {hasCategories && (
-                      <div
-                        className="absolute top-full left-0 mt-6"
-                        style={{
-                          opacity: desktopProductsOpen ? 1 : 0,
-                          transform: desktopProductsOpen
-                            ? "translateY(0)"
-                            : "translateY(-6px)",
-                          pointerEvents: desktopProductsOpen ? "auto" : "none",
-                          transition:
-                            "opacity 0.15s ease, transform 0.15s ease",
-                        }}
-                      >
-                        <div
-                          className="w-48 py-2 rounded-xl"
-                          style={{
-                            backgroundColor: "var(--color-card)",
-                            border: "1px solid var(--color-border)",
-                            boxShadow: "0 12px 40px rgba(0,0,0,0.08)",
-                          }}
-                        >
-                          <Link
-                            href="/productos"
-                            className="block px-4 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)]"
-                            style={{
-                              color: !currentCat
-                                ? "var(--color-primary)"
-                                : "var(--color-text-secondary)",
-                            }}
-                          >
-                            Todo
-                          </Link>
-                          {categories.map((cat) => {
-                            const isCurrentCat =
-                              currentCat === cat.slug ||
-                              currentCat === cat.name;
-                            return (
-                              <Link
-                                key={cat.id}
-                                href={`/productos?cat=${encodeURIComponent(cat.slug || cat.name)}`}
-                                className="block px-4 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)]"
-                                style={{
-                                  color: isCurrentCat
-                                    ? "var(--color-primary)"
-                                    : "var(--color-text-secondary)",
-                                }}
-                              >
-                                {cat.name}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              {NAV_LINKS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative inline-flex items-center px-4 py-2 text-sm font-medium transition-colors duration-300"
+                  style={{
+                    color: isActive(item.href)
+                      ? "var(--color-primary)"
+                      : "var(--color-text-secondary)",
+                  }}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
 
-            {/* Carrito + hamburger */}
+            {/* CTA + hamburger */}
             <div className="flex items-center gap-2">
-              <Link
-                href="/carrito"
-                className="relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300"
+              <button
+                onClick={handleCtaClick}
+                className="hidden sm:inline-flex items-center gap-2 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5"
                 style={{
-                  backgroundColor: isTransparent
-                    ? "rgba(255,255,255,0.15)"
-                    : "var(--color-primary)",
-                  color: "#ffffff",
-                  backdropFilter: isTransparent ? "blur(8px)" : "none",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isTransparent)
-                    e.currentTarget.style.backgroundColor =
-                      "var(--color-primary-hover)";
-                }}
-                onMouseLeave={(e) => {
-                  if (!isTransparent)
-                    e.currentTarget.style.backgroundColor =
-                      "var(--color-primary)";
+                  padding: "0.55rem 1.25rem",
+                  borderRadius: "2rem",
+                  backgroundColor: "var(--color-primary)",
+                  color: "#0A0A0A",
                 }}
               >
-                <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:block">Carrito</span>
-                {totalItems > 0 && (
-                  <span
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center"
-                    style={{
-                      backgroundColor: "var(--color-accent)",
-                      color: "#ffffff",
-                    }}
-                  >
-                    {totalItems > 9 ? "9+" : totalItems}
-                  </span>
-                )}
-              </Link>
+                <MessageCircle className="w-4 h-4" />
+                Pedir envío
+              </button>
 
               <button
                 onClick={() => setIsOpen(true)}
                 className="md:hidden p-2 rounded-lg transition-colors"
-                style={{
-                  color: isTransparent
-                    ? "#ffffff"
-                    : "var(--color-text-primary)",
-                }}
+                style={{ color: "var(--color-text-primary)" }}
                 aria-label="Abrir menú"
               >
                 <Menu className="w-5 h-5" />
@@ -264,22 +180,18 @@ export function Navbar({ heroMode = false }) {
       <div
         onClick={() => setIsOpen(false)}
         className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        style={{
-          backgroundColor: "rgba(44,44,44,0.5)",
-          backdropFilter: "blur(4px)",
-        }}
+        style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
         aria-hidden="true"
       />
 
       <aside
         className="fixed top-0 right-0 h-full w-72 z-50 md:hidden flex flex-col transition-transform duration-300 ease-in-out"
         style={{
-          backgroundColor: "#ffffff",
-          boxShadow: "-8px 0 40px rgba(0,0,0,0.1)",
+          backgroundColor: "var(--color-surface)",
+          borderLeft: "1px solid var(--color-border)",
           transform: isOpen ? "translateX(0)" : "translateX(100%)",
         }}
       >
-        {/* Header sidebar */}
         <div
           className="flex items-center justify-between px-5 py-4"
           style={{ borderBottom: "1px solid var(--color-border)" }}
@@ -287,168 +199,69 @@ export function Navbar({ heroMode = false }) {
           <span
             style={{
               fontFamily: "var(--font-heading)",
-              fontSize: "1.1rem",
-              fontWeight: 500,
+              fontSize: "1.05rem",
+              fontWeight: 700,
               color: "var(--color-text-primary)",
             }}
           >
-            {siteData.business?.name || "Pétalos Serena"}
+            Pedrón Encomiendas
           </span>
           <button
             onClick={() => setIsOpen(false)}
             className="p-1.5 rounded-lg"
-            style={{ color: "var(--color-text-muted)" }}
+            style={{ color: "var(--color-text-secondary)" }}
             aria-label="Cerrar menú"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Links */}
         <nav className="flex-1 overflow-y-auto px-4 py-6">
           <ul className="space-y-1">
-            {navLinks.map((item) => {
-              const isProducts = item.href === "/productos";
-              const hasSubitems = isProducts && categories.length > 0;
-
-              return (
-                <li key={item.href}>
-                  {hasSubitems ? (
-                    <div>
-                      <button
-                        onClick={() =>
-                          setMobileProductsOpen(!mobileProductsOpen)
-                        }
-                        className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-medium transition-colors"
-                        style={{
-                          color: isActive(item.href)
-                            ? "var(--color-primary)"
-                            : "var(--color-text-secondary)",
-                          backgroundColor: isActive(item.href)
-                            ? "var(--color-primary-light)"
-                            : "transparent",
-                        }}
-                      >
-                        <span className="flex items-center gap-3">
-                          <span
-                            className="w-1 h-1 rounded-full shrink-0"
-                            style={{
-                              backgroundColor: isActive(item.href)
-                                ? "var(--color-lila)"
-                                : "var(--color-border-hover)",
-                            }}
-                          />
-                          {item.label}
-                        </span>
-                        <ChevronDown
-                          className="w-4 h-4 transition-transform"
-                          style={{
-                            transform: mobileProductsOpen
-                              ? "rotate(180deg)"
-                              : "rotate(0deg)",
-                          }}
-                        />
-                      </button>
-                      {mobileProductsOpen && (
-                        <div className="ml-6 mt-1 space-y-0.5">
-                          <Link
-                            href="/productos"
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm transition-colors"
-                            style={{
-                              color:
-                                !currentCat && isActive(item.href)
-                                  ? "var(--color-primary)"
-                                  : "var(--color-text-secondary)",
-                              backgroundColor:
-                                !currentCat && isActive(item.href)
-                                  ? "var(--color-primary-light)"
-                                  : "transparent",
-                            }}
-                          >
-                            Todo
-                          </Link>
-                          {categories.map((cat) => {
-                            const isCurrentCat =
-                              currentCat === cat.slug ||
-                              currentCat === cat.name;
-                            return (
-                              <Link
-                                key={cat.id}
-                                href={`/productos?cat=${encodeURIComponent(cat.slug || cat.name)}`}
-                                className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm transition-colors"
-                                style={{
-                                  color: isCurrentCat
-                                    ? "var(--color-primary)"
-                                    : "var(--color-text-secondary)",
-                                  backgroundColor: isCurrentCat
-                                    ? "var(--color-primary-light)"
-                                    : "transparent",
-                                }}
-                              >
-                                {cat.name}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors"
-                      style={{
-                        color: isActive(item.href)
-                          ? "var(--color-primary)"
-                          : "var(--color-text-secondary)",
-                        backgroundColor: isActive(item.href)
-                          ? "var(--color-primary-light)"
-                          : "transparent",
-                      }}
-                    >
-                      <span
-                        className="w-1 h-1 rounded-full shrink-0"
-                        style={{
-                          backgroundColor: isActive(item.href)
-                            ? "var(--color-lila)"
-                            : "var(--color-border-hover)",
-                        }}
-                      />
-                      {item.label}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
+            {NAV_LINKS.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors"
+                  style={{
+                    color: isActive(item.href)
+                      ? "var(--color-primary)"
+                      : "var(--color-text-secondary)",
+                    backgroundColor: isActive(item.href)
+                      ? "var(--color-primary-light)"
+                      : "transparent",
+                  }}
+                >
+                  <span
+                    className="w-1 h-1 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: isActive(item.href)
+                        ? "var(--color-primary)"
+                        : "var(--color-border)",
+                    }}
+                  />
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 
-        {/* CTA carrito */}
         <div
           className="px-4 pb-8 pt-4"
           style={{ borderTop: "1px solid var(--color-border)" }}
         >
-          <Link
-            href="/carrito"
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-medium text-sm transition-colors relative"
+          <button
+            onClick={handleCtaClick}
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-full font-medium text-sm transition-colors"
             style={{
               backgroundColor: "var(--color-primary)",
-              color: "#ffffff",
+              color: "#0A0A0A",
             }}
           >
-            <ShoppingCart className="w-4 h-4" />
-            Ver carrito
-            {totalItems > 0 && (
-              <span
-                className="absolute -top-2 right-3 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center"
-                style={{
-                  backgroundColor: "var(--color-accent)",
-                  color: "#ffffff",
-                }}
-              >
-                {totalItems > 9 ? "9+" : totalItems}
-              </span>
-            )}
-          </Link>
+            <MessageCircle className="w-4 h-4" />
+            Pedir envío por WhatsApp
+          </button>
         </div>
       </aside>
     </>

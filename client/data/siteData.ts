@@ -26,11 +26,11 @@ export const siteData = {
     ],
   },
 
-  cart: {
-    persistenceEnabled: true,
-    persistenceKey: 'petalosserena-cart',
-    showDeliveryModal: false,
-  },
+  // cart: {
+  //   persistenceEnabled: true,
+  //   persistenceKey: 'petalosserena-cart',
+  //   showDeliveryModal: false,
+  // },
 }
 
 export const content = {

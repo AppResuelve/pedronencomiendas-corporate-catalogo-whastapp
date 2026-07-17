@@ -1,43 +1,38 @@
+// @ts-nocheck
 'use client'
 
 import { Suspense } from "react"
 import { usePathname } from "next/navigation"
-import { StoreProvider, useStore } from "@/context/StoreContext"
-import { CartProvider } from "@/context/CartContext"
 import { Navbar } from "@/components/store/Navbar"
 import { Footer } from "@/components/store/Footer"
-import { FloatingWhatsAppButton } from "@/components/ui/FloatingWhatsAppButton"
 import { ScrollToTop } from "@/components/ScrollToTop"
-import { StoreBlocked } from "@/components/store/StoreBlocked"
+import { ModalProvider, useModal } from "@/context/ModalContext"
+import WhatsAppModal from "@/components/WhatsAppModal"
 
-function StoreInner({ children }: { children: React.ReactNode }) {
-  const { store, loading } = useStore()
+function StoreInner({ children }) {
+  const { openModal, closeModal, modalOpen } = useModal()
   const pathname = usePathname()
   const isHome = pathname === '/'
-  const status = store?.store_status || "active"
-
-  if (loading) return null
-  if (status !== "active") return <StoreBlocked status={status} />
 
   return (
-    <CartProvider>
+    <>
       <ScrollToTop />
       <div className="min-h-screen flex flex-col">
         <Suspense fallback={<div className="h-16" />}>
-          <Navbar heroMode={isHome} />
+          <Navbar heroMode={isHome} onOpenModal={openModal} />
         </Suspense>
         <main className="flex-1">{children}</main>
-        <Footer waveFromColor="#ffffff" />
+        <Footer />
       </div>
-      <FloatingWhatsAppButton />
-    </CartProvider>
+      <WhatsAppModal open={modalOpen} onClose={closeModal} />
+    </>
   )
 }
 
-export default function StoreLayout({ children }: { children: React.ReactNode }) {
+export default function StoreLayout({ children }) {
   return (
-    <StoreProvider>
+    <ModalProvider>
       <StoreInner>{children}</StoreInner>
-    </StoreProvider>
+    </ModalProvider>
   )
 }
