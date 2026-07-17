@@ -50,7 +50,7 @@ export default function ProblemSolution() {
               color: "var(--color-text-primary)",
             }}
           >
-            No perdés el día por un repuesto que está a 160 km.
+            No perdés el día por un repuesto que está a 60 km.
           </h2>
         </div>
 
