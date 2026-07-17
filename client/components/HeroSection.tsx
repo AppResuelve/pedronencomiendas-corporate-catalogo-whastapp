@@ -14,17 +14,6 @@ export default function HeroSection({ onOpenModal }) {
         style={{ backgroundColor: "rgba(10,10,10,0.75)" }}
         aria-hidden="true"
       />
-      {/* Línea horizontal decorativa sutil, sugiere el trayecto */}
-      <div
-        className="absolute left-0 right-0 z-10"
-        style={{
-          top: "18%",
-          height: "1px",
-          background:
-            "linear-gradient(to right, transparent, var(--color-border) 20%, var(--color-border) 80%, transparent)",
-        }}
-        aria-hidden="true"
-      />
 
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-24">
         <div className="max-w-5xl mx-auto">

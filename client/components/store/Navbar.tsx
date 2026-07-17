@@ -54,15 +54,26 @@ export function Navbar({ heroMode = false, onOpenModal }) {
     }
   };
 
-  const bgStyle = isTransparent
-    ? { backgroundColor: "transparent" }
-    : {
-        backgroundColor: "var(--color-surface)",
-        borderBottom: "1px solid var(--color-border)",
-      };
+  const bgStyle = {
+    backgroundColor: isTransparent ? "transparent" : "var(--color-surface)",
+    borderBottom: isTransparent
+      ? "1px solid rgba(255, 255, 255, 0)"
+      : "1px solid var(--color-border)",
+  };
 
   return (
     <>
+      {/* Degradé sutil cuando está en top, para legibilidad del logo sobre el hero */}
+      {isTransparent && (
+        <div
+          className="fixed top-0 left-0 right-0 z-40 pointer-events-none"
+          style={{
+            height: "128px",
+            background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)",
+          }}
+          aria-hidden="true"
+        />
+      )}
       <header
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
         style={bgStyle}
