@@ -2,7 +2,7 @@
 'use client'
 
 const EMPRESAS = [
-  { name: "Empresa 1" },
+  { name: "Tienda Plaza Moreno", logo: "/empresas/tiendaplazamoreno.png" },
   { name: "Empresa 2" },
   { name: "Empresa 3" },
   { name: "Empresa 4" },
@@ -25,13 +25,16 @@ export default function TrustBadges() {
           {EMPRESAS.map((empresa) => (
             <div
               key={empresa.name}
-              className="flex items-center justify-center h-10 w-32 rounded-md"
-              style={{ border: "1px dashed var(--color-border)" }}
+              className={`flex items-center justify-center rounded-md ${empresa.logo ? "h-20 w-40" : "h-10 w-32"}`}
+              style={empresa.logo ? {} : { border: "1px dashed var(--color-border)" }}
             >
-              {/* TODO: reemplazar por <img src={empresa.logo} .../> */}
-              <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                {empresa.name}
-              </span>
+              {empresa.logo ? (
+                <img src={empresa.logo} alt={empresa.name} className="h-20 w-auto object-contain" />
+              ) : (
+                <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                  {empresa.name}
+                </span>
+              )}
             </div>
           ))}
         </div>

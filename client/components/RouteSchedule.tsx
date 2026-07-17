@@ -56,7 +56,7 @@ export default function RouteSchedule() {
               className="mb-3"
               style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.5rem", color: "var(--color-text-primary)", lineHeight: 1 }}
             >
-              10:30
+              9:30
             </span>
             <div
               className="w-4 h-4 rounded-full"
@@ -87,7 +87,7 @@ export default function RouteSchedule() {
               className="mb-3"
               style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.5rem", color: "var(--color-text-primary)", lineHeight: 1 }}
             >
-              19:00
+              19:30
             </span>
             <div
               className="w-4 h-4 rounded-full"

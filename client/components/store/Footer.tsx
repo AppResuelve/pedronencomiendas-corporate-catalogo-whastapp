@@ -148,7 +148,7 @@ export function Footer() {
               Victoria, Entre Ríos — Rosario, Santa Fe
             </ContactItem>
             <ContactItem icon={Clock}>
-              Lunes a viernes · 10:30 a 19:00
+              Lunes a viernes · 9:30 a 19:30
             </ContactItem>
           </div>
         </div>

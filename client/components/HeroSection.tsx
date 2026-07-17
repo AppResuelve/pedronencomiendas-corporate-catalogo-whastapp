@@ -57,7 +57,7 @@ export default function HeroSection({ onOpenModal }) {
           >
             ¿Se te paró la producción por un repuesto que solo se consigue en
             Rosario? Pedrón Encomiendas hace el viaje todos los días: sale de
-            Victoria a las 10:30 y vuelve a las 19, con tu envío arriba.
+            Victoria a las 9:30 y vuelve a las 19:30, con tu envío arriba.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">

@@ -12,7 +12,7 @@ const PUNTOS = [
   {
     icon: PackageCheck,
     title: "La solución",
-    text: "Salimos a las 10:30, llegamos a Rosario, hacemos el retiro y volvemos el mismo día a las 19. Tu envío no espera al día siguiente: llega hoy.",
+    text: "Salimos a las 9:30, llegamos a Rosario, hacemos el retiro y volvemos el mismo día a las 19:30. Tu envío no espera al día siguiente: llega hoy.",
     accent: true,
   },
   {
