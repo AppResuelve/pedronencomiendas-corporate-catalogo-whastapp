@@ -2,12 +2,13 @@
 'use client'
 import { useState, useEffect } from "react";
 import { X, MessageCircle } from "lucide-react";
-import { ZONA_PRECIO, buildWhatsAppLink } from "@/lib/whatsapp";
+import { ZONA_PRECIO, ZONA_LABEL, buildWhatsAppLink, type Destino } from "@/lib/whatsapp";
 
 export default function WhatsAppModal({ open, onClose }) {
   const [nombre, setNombre] = useState("");
   const [tipoEnvio, setTipoEnvio] = useState("");
-  const [zona, setZona] = useState("rosario");
+  const [destino, setDestino] = useState<Destino>("rosario");
+  const [zona, setZona] = useState("ciudad");
   const [detalle, setDetalle] = useState("");
 
   useEffect(() => {
@@ -21,11 +22,12 @@ export default function WhatsAppModal({ open, onClose }) {
 
   if (!open) return null;
 
-  const zonaInfo = ZONA_PRECIO[zona];
+  const zonas = ZONA_PRECIO[destino];
+  const zonaInfo = zonas[zona] ?? zonas.ciudad;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const link = buildWhatsAppLink({ nombre, tipoEnvio, zona, detalle });
+    const link = buildWhatsAppLink({ nombre, tipoEnvio, destino, zona, detalle });
     window.open(link, "_blank", "noopener,noreferrer");
     onClose();
   };
@@ -126,16 +128,54 @@ export default function WhatsAppModal({ open, onClose }) {
             />
           </div>
 
-          {/* Modificador de zona */}
+          {/* Toggle destino */}
           <div>
             <span
               className="block text-xs font-medium tracking-wide uppercase mb-2"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              ¿Dónde hay que entregar en Rosario?
+              ¿Hacia dónde es el envío?
             </span>
             <div className="grid grid-cols-2 gap-3">
-              {Object.entries(ZONA_PRECIO).map(([key, info]) => (
+              {(["rosario", "victoria"] as Destino[]).map((d) => (
+                <button
+                  type="button"
+                  key={d}
+                  onClick={() => { setDestino(d); setZona("ciudad"); }}
+                  className="rounded-lg px-3 py-3 text-center transition-all"
+                  style={{
+                    border:
+                      destino === d
+                        ? "1.5px solid var(--color-primary)"
+                        : "1px solid var(--color-border)",
+                    backgroundColor:
+                      destino === d ? "var(--color-primary-light)" : "var(--color-bg)",
+                  }}
+                >
+                  <span
+                    className="block text-sm font-medium"
+                    style={{
+                      color:
+                        destino === d ? "var(--color-primary)" : "var(--color-text-primary)",
+                    }}
+                  >
+                    {d === "rosario" ? "Rosario" : "Victoria"}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Zonas dinámicas según destino */}
+          <div>
+            <span
+              className="block text-xs font-medium tracking-wide uppercase mb-2"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              {ZONA_LABEL[destino]}
+            </span>
+            <div className="grid grid-cols-2 gap-3">
+              {Object.entries(zonas).map(([key, info]) => (
                 <button
                   type="button"
                   key={key}
@@ -163,34 +203,11 @@ export default function WhatsAppModal({ open, onClose }) {
                     className="block text-xs mt-0.5"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
-                    ${info.precio.toLocaleString("es-AR")} aprox.
+                    a partir de ${info.precio.toLocaleString("es-AR")}
                   </span>
                 </button>
               ))}
             </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="detalle"
-              className="block text-xs font-medium tracking-wide uppercase mb-2"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              Algo más que quieras aclarar (opcional)
-            </label>
-            <textarea
-              id="detalle"
-              rows={2}
-              value={detalle}
-              onChange={(e) => setDetalle(e.target.value)}
-              placeholder="Ej: lo retiro en un local de Victoria a las 9"
-              className="w-full rounded-lg px-4 py-2.5 text-sm outline-none resize-none transition-colors"
-              style={{
-                backgroundColor: "var(--color-bg)",
-                border: "1px solid var(--color-border)",
-                color: "var(--color-text-primary)",
-              }}
-            />
           </div>
 
           <button
@@ -209,7 +226,7 @@ export default function WhatsAppModal({ open, onClose }) {
             className="text-xs text-center"
             style={{ color: "var(--color-text-secondary)" }}
           >
-            Precio de {zonaInfo.label.toLowerCase()}: ${zonaInfo.precio.toLocaleString("es-AR")} aprox. Se confirma por WhatsApp según el objeto y el punto exacto.
+            Precio {zonaInfo.label.toLowerCase()}: a partir de ${zonaInfo.precio.toLocaleString("es-AR")}. Se confirma por WhatsApp según el objeto y el punto exacto.
           </p>
         </form>
       </div>
