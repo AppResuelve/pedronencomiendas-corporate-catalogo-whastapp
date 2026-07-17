@@ -35,7 +35,7 @@ function ContactItem({ icon: Icon, href, children }) {
       <span
         className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
         style={{
-          backgroundColor: "rgba(255,255,255,0.06)",
+          backgroundColor: "var(--color-icon-bg)",
           color: "var(--color-primary)",
         }}
       >
@@ -43,7 +43,7 @@ function ContactItem({ icon: Icon, href, children }) {
       </span>
       <span
         className="text-sm leading-snug"
-        style={{ color: "rgba(255,255,255,0.55)" }}
+        style={{ color: "var(--color-text-muted)" }}
       >
         {children}
       </span>
@@ -109,7 +109,7 @@ export function Footer() {
                 </span>
                 <p
                   className="text-sm leading-relaxed mt-3 max-w-xs"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
+                  style={{ color: "var(--color-text-muted)" }}
                 >
                   Viajes diarios Victoria – Rosario. Trámites y paquetería con
                   retiro y entrega el mismo día.
@@ -128,7 +128,7 @@ export function Footer() {
                     <Link
                       href={link.href}
                       className="text-sm transition-colors duration-200"
-                      style={{ color: "rgba(255,255,255,0.5)" }}
+                  style={{ color: "var(--color-text-muted)" }}
                     >
                       {link.label}
                     </Link>
@@ -159,7 +159,7 @@ export function Footer() {
         >
           <p
             className="text-xs text-center"
-            style={{ color: "rgba(255,255,255,0.3)" }}
+            style={{ color: "var(--color-text-faint)" }}
           >
             © {currentYear} Pedrón Encomiendas. Todos los derechos reservados.
           </p>

@@ -156,7 +156,7 @@ export function Navbar({ heroMode = false, onOpenModal }) {
                   padding: "0.55rem 1.25rem",
                   borderRadius: "2rem",
                   backgroundColor: "var(--color-primary)",
-                  color: "#0A0A0A",
+                  color: "var(--color-text-on-primary)",
                 }}
               >
                 <MessageCircle className="w-4 h-4" />
@@ -180,7 +180,7 @@ export function Navbar({ heroMode = false, onOpenModal }) {
       <div
         onClick={() => setIsOpen(false)}
         className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+        style={{ backgroundColor: "var(--color-backdrop)" }}
         aria-hidden="true"
       />
 
@@ -256,7 +256,7 @@ export function Navbar({ heroMode = false, onOpenModal }) {
             className="flex items-center justify-center gap-2 w-full py-3 rounded-full font-medium text-sm transition-colors"
             style={{
               backgroundColor: "var(--color-primary)",
-              color: "#0A0A0A",
+              color: "var(--color-text-on-primary)",
             }}
           >
             <MessageCircle className="w-4 h-4" />

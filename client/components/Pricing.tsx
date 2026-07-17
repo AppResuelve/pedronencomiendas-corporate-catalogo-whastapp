@@ -155,7 +155,7 @@ export default function Pricing({ onOpenModal }) {
               padding: "0.9rem 2.25rem",
               borderRadius: "2rem",
               backgroundColor: "var(--color-primary)",
-              color: "#0A0A0A",
+              color: "var(--color-text-on-primary)",
             }}
           >
             Consultar mi envío

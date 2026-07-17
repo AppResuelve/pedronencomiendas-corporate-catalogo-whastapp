@@ -35,7 +35,7 @@ export default function FinalCTA({ onOpenModal }) {
             padding: "1rem 2.5rem",
             borderRadius: "2rem",
             backgroundColor: "var(--color-primary)",
-            color: "#0A0A0A",
+            color: "var(--color-text-on-primary)",
             boxShadow: "0 8px 30px rgba(250,140,16,0.25)",
           }}
         >

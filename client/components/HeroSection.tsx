@@ -5,12 +5,18 @@ import { ArrowRight, Clock } from "lucide-react";
 export default function HeroSection({ onOpenModal }) {
   return (
     <section
-      className="relative min-h-[92vh] flex items-center overflow-hidden"
+      className="hero-bg relative min-h-[92vh] flex items-center overflow-hidden"
       style={{ backgroundColor: "var(--color-bg)" }}
     >
+      {/* Overlay oscuro para legibilidad del texto */}
+      <div
+        className="absolute inset-0"
+        style={{ backgroundColor: "rgba(10,10,10,0.75)" }}
+        aria-hidden="true"
+      />
       {/* Línea horizontal decorativa sutil, sugiere el trayecto */}
       <div
-        className="absolute left-0 right-0"
+        className="absolute left-0 right-0 z-10"
         style={{
           top: "18%",
           height: "1px",
@@ -20,7 +26,7 @@ export default function HeroSection({ onOpenModal }) {
         aria-hidden="true"
       />
 
-      <div className="relative w-full px-4 sm:px-6 lg:px-8 py-24">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-24">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
             <Clock className="w-4 h-4" style={{ color: "var(--color-primary)" }} />
@@ -70,7 +76,7 @@ export default function HeroSection({ onOpenModal }) {
                 padding: "0.9rem 2.25rem",
                 borderRadius: "2rem",
                 backgroundColor: "var(--color-primary)",
-                color: "#0A0A0A",
+                color: "var(--color-text-on-primary)",
                 boxShadow: "0 8px 30px rgba(250,140,16,0.25)",
               }}
             >

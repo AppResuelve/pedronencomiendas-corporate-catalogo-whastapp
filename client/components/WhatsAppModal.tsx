@@ -40,7 +40,7 @@ export default function WhatsAppModal({ open, onClose }) {
       {/* Backdrop */}
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+        style={{ backgroundColor: "var(--color-backdrop)" }}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -198,7 +198,7 @@ export default function WhatsAppModal({ open, onClose }) {
             className="w-full inline-flex items-center justify-center gap-2 font-medium text-sm py-3 rounded-full transition-all duration-300 hover:-translate-y-0.5"
             style={{
               backgroundColor: "var(--color-primary)",
-              color: "#0A0A0A",
+              color: "var(--color-text-on-primary)",
             }}
           >
             <MessageCircle className="w-4 h-4" />
