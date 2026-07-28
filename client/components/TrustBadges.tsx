@@ -3,9 +3,11 @@
 
 const EMPRESAS = [
   { name: "Tienda Plaza Moreno", logo: "/empresas/tiendaplazamoreno.png" },
-  { name: "Empresa 2" },
-  { name: "Empresa 3" },
-  { name: "Empresa 4" },
+  { name: "Retificaciones Navoni", logo: "/empresas/retificacionesnavoni.webp" },
+  { name: "Silva Maquinarias", logo: "/empresas/silvamaquinarias.webp" },
+  { name: "OEM Computación", logo: "/empresas/oemcomputacion.webp" },
+  { name: "Musto Repuestos", logo: "/empresas/mustorepuestos.webp", rounded: true },
+  { name: "Elásticos Los Mendocinos", logo: "/empresas/elasticoslosmendocinos.webp" },
 ];
 
 export default function TrustBadges() {
@@ -21,20 +23,16 @@ export default function TrustBadges() {
         >
           Empresas que ya confían en nosotros
         </span>
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-10 px-4 sm:px-0">
           {EMPRESAS.map((empresa) => (
             <div
               key={empresa.name}
-              className={`flex items-center justify-center rounded-md ${empresa.logo ? "h-20 w-40" : "h-10 w-32"}`}
-              style={empresa.logo ? {} : { border: "1px dashed var(--color-border)" }}
+              className="flex flex-col items-center justify-center gap-2"
             >
-              {empresa.logo ? (
-                <img src={empresa.logo} alt={empresa.name} className="h-20 w-auto object-contain" />
-              ) : (
-                <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                  {empresa.name}
-                </span>
-              )}
+              <img src={empresa.logo} alt={empresa.name} className={`h-20 w-auto object-contain ${empresa.rounded ? "rounded-full" : ""}`} />
+              <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                {empresa.name}
+              </span>
             </div>
           ))}
         </div>
