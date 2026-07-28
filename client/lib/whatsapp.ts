@@ -5,18 +5,22 @@
 // Ej: 3436-611247 (Victoria, E.R.) → "5493436611247"
 // ─────────────────────────────────────────────────────────────────────────
 
+import { siteData } from '@/data/siteData'
+
 export const WHATSAPP_NUMBER = "5493436611247"; // ← verificar/ajustar
 
 export type Destino = "rosario" | "victoria";
 
+const p = siteData.pricing;
+
 export const ZONA_PRECIO: Record<Destino, Record<string, { label: string; precio: number }>> = {
   rosario: {
-    ciudad: { label: "Rosario ciudad", precio: 12000 },
-    alrededores: { label: "Alrededores de Rosario", precio: 20000 },
+    ciudad: { label: p.ciudad.label.split(' / ')[0], precio: p.ciudad.precio },
+    alrededores: { label: p.alrededores.label.split(' / ')[0], precio: p.alrededores.precio },
   },
   victoria: {
-    ciudad: { label: "Victoria ciudad", precio: 12000 },
-    alrededores: { label: "Alrededores de Victoria", precio: 20000 },
+    ciudad: { label: p.ciudad.label.split(' / ')[1], precio: p.ciudad.precio },
+    alrededores: { label: p.alrededores.label.split(' / ')[1], precio: p.alrededores.precio },
   },
 };
 

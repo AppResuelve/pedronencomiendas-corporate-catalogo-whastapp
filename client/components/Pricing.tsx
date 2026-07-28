@@ -1,8 +1,10 @@
 // @ts-nocheck
 "use client";
 import { ArrowRight, Check } from "lucide-react";
+import { siteData } from "@/data/siteData";
 
 export default function Pricing({ onOpenModal }) {
+  const { ciudad, alrededores } = siteData.pricing;
   return (
     <section
       id="precios"
@@ -40,7 +42,7 @@ export default function Pricing({ onOpenModal }) {
               className="text-xs font-medium tracking-wide uppercase"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              Rosario ciudad / Victoria ciudad
+              {ciudad.label}
             </span>
             <div className="flex items-baseline gap-2 mt-3 mb-6">
               <span
@@ -57,7 +59,7 @@ export default function Pricing({ onOpenModal }) {
                   color: "var(--color-text-primary)",
                 }}
               >
-                $12.000
+                ${ciudad.precio.toLocaleString("es-AR")}
               </span>
               <span
                 className="text-sm"
@@ -99,7 +101,7 @@ export default function Pricing({ onOpenModal }) {
               className="text-xs font-medium tracking-wide uppercase"
               style={{ color: "var(--color-primary)" }}
             >
-              Alrededores de Rosario / Victoria
+              {alrededores.label}
             </span>
             <div className="flex items-baseline gap-2 mt-3 mb-6">
               <span
@@ -116,7 +118,7 @@ export default function Pricing({ onOpenModal }) {
                   color: "var(--color-text-primary)",
                 }}
               >
-                $20.000
+                ${alrededores.precio.toLocaleString("es-AR")}
               </span>
               <span
                 className="text-sm"

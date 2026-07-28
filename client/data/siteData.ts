@@ -1,4 +1,8 @@
 export const siteData = {
+  pricing: {
+    ciudad: { label: 'Rosario ciudad / Victoria ciudad', precio: 14000 },
+    alrededores: { label: 'Alrededores de Rosario / Victoria', precio: 22000 },
+  },
   navbar: {
     logoOnly: false,
     items: [
